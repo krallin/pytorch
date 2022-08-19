@@ -1105,7 +1105,7 @@ def main():
     proc_limit = 3
     try:
         os.environ['PARALLEL_TESTING'] = '1'
-        for i in proc_limit:
+        for i in range(proc_limit):
             p = mp.Process(target=mp_run_test_module, args=(
                 test_tasks, ret_queue, abort_queue, test_directory, copy.deepcopy(options)))
             procs.append(p)

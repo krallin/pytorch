@@ -978,7 +978,6 @@ class DistributedDataParallel(Module, Joinable):
     # see torchdynamo/eval_frame.py TorchPatcher.patch for more details
     @contextmanager
     def _inside_ddp_forward(self):
-        assert DistributedDataParallel._active_ddp_module is None, "Only one thread should be running DDP at a time"
         DistributedDataParallel._active_ddp_module = self
         try:
             yield

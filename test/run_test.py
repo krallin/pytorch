@@ -925,9 +925,6 @@ def exclude_tests(exclude_list, selected_tests, exclude_message=None):
 
 
 def must_serial(file: str) -> bool:
-    build_environment = os.getenv("BUILD_ENVIRONMENT", "linux cuda")
-    if "linux" in build_environment and "cuda" in build_environment:
-        return True
     if (
         file in CUSTOM_HANDLERS or
         "distributed" in os.getenv("TEST_CONFIG", "") or

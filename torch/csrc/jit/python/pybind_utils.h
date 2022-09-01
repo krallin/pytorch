@@ -1067,6 +1067,10 @@ inline c10::optional<py::object> maybeTorchFunctionDispatch(
     const tuple_slice& args_no_self,
     const py::kwargs& kwargs,
     const c10::QualifiedName qualname) {
+  if (should_skip_torch_function()) {
+    return c10::nullopt;
+  }
+
   std::vector<py::handle> args_vec;
   for (const auto& arg : args_no_self) {
     args_vec.push_back(arg);
@@ -1213,6 +1217,10 @@ inline py::object _get_operation_for_overload_or_packet(
     const py::kwargs& kwargs,
     bool is_overload,
     c10::optional<c10::DispatchKey> dk = c10::nullopt) {
+  if (should_skip_torch_function()) {
+    return invokeOperatorFromPython(operations, args, kwargs);
+  }
+
   std::vector<py::handle> overloaded_args;
   size_t total_arg_num = args.size() + kwargs.size();
   for (const auto i : c10::irange(args.size())) {

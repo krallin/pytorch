@@ -929,6 +929,7 @@ def must_serial(file: str) -> bool:
         file in CUSTOM_HANDLERS or
         "distributed" in os.getenv("TEST_CONFIG", "") or
         "functorch" in os.getenv("TEST_CONFIG", "") or
+        "dynamo" in os.getenv("TEST_CONFIG", "") or
         file in RUN_PARALLEL_BLOCKLIST or
         "distributed" in file
     ):
@@ -936,7 +937,8 @@ def must_serial(file: str) -> bool:
     else:
         return file in ['test_nn', 'test_fake_tensor', 'test_cpp_api_parity', 'test_jit_cuda_fuser', 'test_reductions',
                         'test_cuda', 'test_indexing', 'test_fx_backends', 'test_linalg', 'test_cpp_extensions_jit',
-                        'test_torch', 'test_tensor_creation_ops', 'test_sparse_csr', 'test_dispatch', 'nn/test_pooling']
+                        'test_torch', 'test_tensor_creation_ops', 'test_sparse_csr', 'test_dispatch', 'nn/test_pooling',
+                        'distributions/test_distributions']
 
 
 def get_selected_tests(options):

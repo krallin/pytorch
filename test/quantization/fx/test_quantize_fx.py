@@ -13,7 +13,7 @@ import torch.nn.intrinsic as nni
 import torch.nn.intrinsic.quantized as nniq
 import torch.nn.intrinsic.quantized.dynamic as nniqd
 import torch.multiprocessing as mp
-from torch.ao.quantization import is_activation_post_process
+from torch.ao.quantization import is_activation_post_process, get_default_qconfig_mapping
 
 # graph mode quantization based on fx
 from torch.ao.quantization.quantize_fx import (
@@ -5917,15 +5917,15 @@ class TestQuantizeFxOps(QuantizationTestCase):
             ns.call_function(torch.quantize_per_tensor): 1,
             ns.call_function(torch.ops.quantized.linear): 1,
             ns.call_function(torch.ops.quantized.layer_norm): 1,
-            ns.call_function(torch.quantize_per_channel): 1,
-            ns.call_method("dequantize"): 2,
+            ns.call_method("dequantize"): 1,
         }
 
         self.checkGraphModeFxOp(
             model,
             (torch.rand(5, 5),),
             QuantType.STATIC,
-            expected_node_occurrence=expected_occurrence
+            expected_node_occurrence=expected_occurrence,
+            custom_qconfig_dict=get_default_qconfig_mapping().to_dict()
         )
 
     def _test_default_node_quant_handler_ops(
